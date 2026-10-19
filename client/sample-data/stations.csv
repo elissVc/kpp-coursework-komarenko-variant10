@@ -1,0 +1,3 @@
+address;power_capacity;status;connector_type;power;is_fast_charge
+м. Полтава, вул. Європейська, 10;150.0;Активна;Type 2;22.0;false
+м. Полтава, вул. Зіньківська, 6;50.0;Активна;CCS2;120.0;true
