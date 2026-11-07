@@ -1,7 +1,7 @@
 package ua.edu.nupp.kpp.server;
 
 public enum IncidentState {
-    FIXED,
+    RECORDED,
     DIAGNOSED,
     REPAIR,
     RESTORED
