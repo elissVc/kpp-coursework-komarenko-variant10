@@ -1,4 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee" version="4.0">
 
+    <servlet>
+        <servlet-name>StationServlet</servlet-name>
+        <servlet-class>ua.edu.nupp.kpp.server.StationServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>StationServlet</servlet-name>
+        <url-pattern>/stations</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ChargingModuleServlet</servlet-name>
+        <servlet-class>ua.edu.nupp.kpp.server.ChargingModuleServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ChargingModuleServlet</servlet-name>
+        <url-pattern>/modules</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>IncidentServlet</servlet-name>
+        <servlet-class>ua.edu.nupp.kpp.server.IncidentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>IncidentServlet</servlet-name>
+        <url-pattern>/incidents</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>RepairTaskServlet</servlet-name>
+        <servlet-class>ua.edu.nupp.kpp.server.RepairTaskServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RepairTaskServlet</servlet-name>
+        <url-pattern>/tasks</url-pattern>
+    </servlet-mapping>
+
 </web-app>
