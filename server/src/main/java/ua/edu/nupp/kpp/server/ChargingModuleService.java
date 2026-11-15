@@ -37,8 +37,11 @@ public class ChargingModuleService {
     }
 
     static void validate(ChargingModule m) {
-        if (m == null || m.getStationId() <= 0) {
+        if (m == null || m.getStationId() <= 0 || m.getConnectorType() == null || m.getConnectorType().isBlank()) {
             throw new IllegalArgumentException("Некоректні основні дані зарядного модуля");
+        }
+        if (m.getPower() <= 0) {
+            throw new IllegalArgumentException("Потужність зарядного модуля повинна бути більшою за нуль");
         }
     }
 

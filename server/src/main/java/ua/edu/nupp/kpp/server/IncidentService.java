@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.logging.Logger;
 
 public class IncidentService {
-
     private static final Logger LOG = Logger.getLogger(IncidentService.class.getName());
     private final IncidentDAO dao = new IncidentDAO();
     private final ChargingModuleDAO moduleDAO = new ChargingModuleDAO();
+    private final StationDAO stationDAO = new StationDAO();
 
     public List<Incident> getAll() throws SQLException {
         return dao.getAll();
@@ -28,19 +28,15 @@ public class IncidentService {
         if (m == null) {
             throw new IllegalArgumentException("Зарядний модуль не знайдено");
         }
+        Station s = stationDAO.getById(m.getStationId());
+        double maxLoad = (s != null && s.getPowerCapacity() > 0) ? s.getPowerCapacity() : m.getPower();
 
-        double maxLoad = m.getPower();
+        double f1 = IncidentCalculator.factor1(m.getPower(), maxLoad);
+        double f2 = m.isFastCharge() ? 80.0 : 50.0;
+        double f3 = 60.0;
+        double riskIndex = IncidentCalculator.calculate(f1, f2, f3);
 
-        double currentLoad = maxLoad * 0.85;
-
-        double f1 = IncidentCalculator.factor1(currentLoad, maxLoad);
-
-        double f2 = 75.0;
-        double f3 = 40.0;
-
-        double priorityIndex = IncidentCalculator.calculate(f1, f2, f3);
-
-        return new Incident(id, moduleId, state, f1, f2, f3, priorityIndex);
+        return new Incident(id, moduleId, state, f1, f2, f3, riskIndex);
     }
 
     public void add(long moduleId) throws SQLException {
