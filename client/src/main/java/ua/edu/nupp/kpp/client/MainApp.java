@@ -9,6 +9,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import java.util.logging.Logger;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+import java.nio.charset.StandardCharsets;
 
 public class MainApp extends Application {
     private static final Logger LOG = Logger.getLogger(MainApp.class.getName());
@@ -346,5 +350,40 @@ public class MainApp extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+    private void readAndSendTestCsv() {
+        try {
+            Path file = Path.of("sample-data", "stations.csv");
+            List<String> lines = Files.readAllLines(file, StandardCharsets.UTF_8);
+            for (int i = 1; i < lines.size(); i++) {
+                String line = lines.get(i).trim();
+                if (line.isEmpty()) continue;
+                String[] p = line.split(";", -1);
+
+                Station s = new Station(
+                        null,
+                        p[0].trim(),
+                        Double.parseDouble(p[1].trim()),
+                        p[2].trim()
+                );
+                api.addStation(s);
+
+                List<Station> allStations = api.getStations();
+                long newStationId = allStations.get(allStations.size() - 1).getId();
+
+                ChargingModule m = new ChargingModule(
+                        null,
+                        newStationId,
+                        p[3].trim(),
+                        Double.parseDouble(p[4].trim()),
+                        Boolean.parseBoolean(p[5].trim())
+                );
+                api.addModule(m);
+            }
+            refreshAll();
+            LOG.info("Початковий імпорт stations.csv виконано!");
+        } catch (Exception e) {
+            showError(e);
+        }
     }
 }
